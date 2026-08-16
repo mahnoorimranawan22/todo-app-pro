@@ -5,10 +5,11 @@
 
 // ---- API base resolution ----
 // 1. window.API_BASE_URL (set in index.html or by the host) wins.
-// 2. Otherwise, if this page is served by the API server itself
-//    (it exposes /api/health), relative URLs work.
-// 3. Otherwise (e.g. opened via Live Server on another port),
-//    fall back to the default API origin on this machine.
+// 2. Otherwise, probe the API server on this machine's default port.
+// 3. Otherwise fall back to same-origin (an API server running on a
+//    non-default port that also serves the frontend).
+// Probing the API port first keeps the console clean when the page is
+// served by a plain static host (e.g. Live Server) that 404s on /api/*.
 
 const DEFAULT_API_PORT = 5000;
 
@@ -23,14 +24,12 @@ function resolveApiBase() {
     return apiBasePromise;
   }
 
-  apiBasePromise = fetch(`${location.origin}/api/health`)
-    .then((res) => (res.ok ? '' : null))
+  const host = location.hostname || 'localhost';
+  const defaultOrigin = `http://${host}:${DEFAULT_API_PORT}`;
+  apiBasePromise = fetch(`${defaultOrigin}/api/health`)
+    .then((res) => (res.ok ? defaultOrigin : null))
     .catch(() => null)
-    .then((base) => {
-      if (base !== null) return base; // served by the API server → same origin
-      const host = location.hostname || 'localhost';
-      return `http://${host}:${DEFAULT_API_PORT}`;
-    });
+    .then((base) => (base !== null ? base : ''));
 
   return apiBasePromise;
 }
