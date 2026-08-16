@@ -1,0 +1,36 @@
+# Koyeb Blueprint — deploy the "Todo App Pro" backend with one click.
+# Docs: https://www.koyeb.com/docs/build-and-deploy
+# After connecting this repo, fill the 4 secret env vars in the Koyeb dashboard
+# (they show up as "fill me in" — values are never stored in git).
+
+name: todo-app-pro-api
+type: web
+definition:
+  git:
+    branch: main
+    build_command: cd server && npm install
+    run_command: cd server && npm start
+  instance_types:
+    - free
+  env:
+    - key: NODE_ENV
+      value: "production"
+    - key: PORT
+      value: "5000"
+    - key: MONGODB_URI
+      value: ""
+      secret: true
+    - key: JWT_SECRET
+      value: ""
+      secret: true
+    - key: APP_URL
+      value: ""
+      secret: true
+    - key: RESEND_API_KEY
+      value: ""
+      secret: true
+  regions:
+    - fra
+  scaling:
+    min: 1
+    max: 1
