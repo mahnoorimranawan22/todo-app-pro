@@ -1,0 +1,8 @@
+.git
+server/node_modules
+server/.env
+*.log
+Dockerfile
+render.yaml
+koyeb.yaml
+README.md
