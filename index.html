@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App Pro</title>
+
+    <!-- Favicon -->
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✅</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Ambient animated gradient orbs -->
+    <div class="bg-orbs" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- ================= AUTH VIEW ================= -->
+    <section id="authView" class="auth-view hidden">
+        <div class="tilt-wrap">
+            <div class="auth-card">
+            <div class="auth-hero" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?auto=format&fit=crop&w=800&q=80"
+                     alt="" loading="lazy" width="800" height="1000">
+                <div class="auth-hero-shade"></div>
+                <div class="auth-hero-quote">
+                    <i class="fa-solid fa-quote-left"></i>
+                    <p>Organize your day. Own your focus.</p>
+                </div>
+            </div>
+
+            <div class="auth-panel">
+                <div class="auth-brand">
+                    <div class="brand-logo"><i class="fa-solid fa-list-check"></i></div>
+                    <h1>Todo App Pro</h1>
+                    <p>Small steps every day add up to big results.</p>
+                </div>
+
+                <div id="authTabs" class="auth-tabs" role="tablist">
+                    <button id="authTabLogin" class="auth-tab active" type="button">Log in</button>
+                    <button id="authTabRegister" class="auth-tab" type="button">Create account</button>
+                </div>
+
+                <form id="authForm" novalidate>
+                    <div id="nameField" class="field hidden">
+                        <label for="authName">Full name</label>
+                        <input type="text" id="authName" placeholder="Jane Doe" autocomplete="name">
+                    </div>
+
+                    <div class="field">
+                        <label for="authEmail">Email</label>
+                        <input type="email" id="authEmail" placeholder="you@example.com" autocomplete="email" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="authPassword">Password</label>
+                        <input type="password" id="authPassword" placeholder="••••••••" autocomplete="current-password" required>
+                        <small id="passwordHint" class="hint hidden">At least 6 characters</small>
+                    </div>
+
+                    <p id="authError" class="auth-error hidden"></p>                <button id="authSubmit" type="submit" class="btn btn-gradient btn-block">
+                    <span class="btn-label">Log in</span>
+                    <span class="spinner hidden"></span>
+                </button>
+
+                <p class="auth-foot">
+                    <button id="forgotLink" type="button" class="link-btn">Forgot password?</button>
+                </p>
+            </form>
+
+            <div id="resetPanel" class="reset-panel hidden">
+                <p class="reset-intro">Enter the email you signed up with and we'll send a password reset link.</p>
+                <div class="field">
+                    <label for="resetEmail">Email</label>
+                    <input type="email" id="resetEmail" placeholder="you@example.com" autocomplete="email">
+                </div>
+                <p id="resetError" class="auth-error hidden"></p>
+                <button id="resetSubmit" type="button" class="btn btn-gradient btn-block">Send reset link</button>
+                <p class="auth-foot">
+                    <button id="backToLogin" type="button" class="link-btn">← Back to login</button>
+                </p>
+            </div>
+            </div>
+
+            <div class="tilt-glare" aria-hidden="true"></div>
+        </div>
+    </div>
+</section>
+
+    <!-- ================= EMAIL LINK VIEW ================= -->
+    <section id="linkView" class="auth-view hidden">
+        <div class="auth-card link-card">
+            <div class="auth-brand">
+                <div class="brand-logo"><i class="fa-solid fa-list-check"></i></div>
+                <h1 id="linkTitle">One moment…</h1>
+                <p id="linkText">Processing your link.</p>
+            </div>
+
+            <div id="linkFormWrap" class="hidden">
+                <div class="field">
+                    <label for="linkPassword">New password</label>
+                    <input type="password" id="linkPassword" placeholder="At least 6 characters" autocomplete="new-password">
+                </div>
+                <p id="linkError" class="auth-error hidden"></p>
+                <button id="linkSubmit" type="button" class="btn btn-gradient btn-block">Set new password</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= APP VIEW ================= -->
+    <div id="appView" class="container hidden">
+
+        <!-- Header -->
+        <header>
+            <h1><i class="fa-solid fa-list-check"></i> Todo App Pro</h1>
+
+            <div class="header-actions">
+                <button id="themeBtn" class="icon-btn ghost" title="Toggle theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
+                <div class="user-menu">
+                    <button id="userBtn" class="avatar" title="Account">
+                        <span id="userInitials">?</span>
+                    </button>
+                    <div id="userDropdown" class="dropdown hidden">
+                        <div class="dropdown-user">
+                            <strong id="userName">—</strong>
+                            <span id="userEmail">—</span>
+                        </div>
+                        <button id="logoutBtn" class="dropdown-item danger" type="button">
+                            <i class="fa-solid fa-right-from-bracket"></i> Log out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Welcome banner -->
+        <section class="banner">
+            <div class="banner-bg" aria-hidden="true"></div>
+            <div class="banner-content">
+                <p class="banner-greeting" id="bannerGreeting">Welcome 👋</p>
+                <h2 id="bannerSub">Let's make today count.</h2>
+            </div>
+        </section>
+
+        <!-- Search + sort toolbar -->
+        <section class="toolbar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search tasks…" autocomplete="off">
+                <kbd>/</kbd>
+            </div>
+
+            <div class="sort-box">
+                <i class="fa-solid fa-arrow-down-wide-short"></i>
+                <select id="sortSelect" aria-label="Sort tasks">
+                    <option value="newest">Newest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="due">Due date</option>
+                    <option value="priority">Priority</option>
+                    <option value="az">A → Z</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Add task form -->
+        <section class="task-form">
+            <input type="text" id="taskInput" placeholder="What needs to be done?" maxlength="200" autocomplete="off">
+            <select id="categorySelect" aria-label="Category">
+                <option>Study</option>
+                <option>Work</option>
+                <option>Personal</option>
+                <option>Other</option>
+            </select>
+            <select id="prioritySelect" aria-label="Priority">
+                <option value="High">High</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="Low">Low</option>
+            </select>
+            <input type="date" id="dueDateInput" aria-label="Due date">
+            <button id="addBtn" class="btn btn-gradient" title="Add task">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </section>
+
+        <!-- Statistics -->
+        <section class="stats">
+            <div class="card stat-total">
+                <div class="card-icon"><i class="fa-solid fa-list-check"></i></div>
+                <h2 id="totalTasks">0</h2>
+                <p>Total tasks</p>
+            </div>
+            <div class="card stat-done">
+                <div class="card-icon"><i class="fa-solid fa-circle-check"></i></div>
+                <h2 id="completedTasks">0</h2>
+                <p>Completed</p>
+            </div>
+            <div class="card stat-left">
+                <div class="card-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                <h2 id="remainingTasks">0</h2>
+                <p>Remaining</p>
+            </div>
+        </section>
+
+        <!-- Progress -->
+        <div class="progress-wrap">
+            <div class="progress-head">
+                <span id="progressLabel">Daily progress</span>
+                <span id="progressPercent" class="progress-percent">0%</span>
+            </div>
+            <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <!-- Filters + bulk actions -->
+        <div class="list-head">
+            <div id="filterTabs" class="filter-tabs" role="tablist">
+                <button class="filter-tab active" data-status="all" type="button">All <span id="countAll">0</span></button>
+                <button class="filter-tab" data-status="active" type="button">Active <span id="countActive">0</span></button>
+                <button class="filter-tab" data-status="completed" type="button">Done <span id="countDone">0</span></button>
+            </div>
+
+            <div class="bulk-actions">
+                <button id="analyticsBtn" class="btn btn-ghost-sm" type="button" title="View analytics">
+                    <i class="fa-solid fa-chart-column"></i> Analytics
+                </button>
+                <button id="exportBtn" class="btn btn-ghost-sm" type="button" title="Export tasks as JSON">
+                    <i class="fa-solid fa-download"></i> Export
+                </button>
+                <label class="btn btn-ghost-sm" title="Import tasks from JSON">
+                    <i class="fa-solid fa-upload"></i> Import
+                    <input type="file" id="importFile" accept=".json,application/json" hidden>
+                </label>
+                <button id="clearCompletedBtn" class="btn btn-ghost-sm danger-text hidden" type="button">
+                    <i class="fa-solid fa-broom"></i> Clear done
+                </button>
+            </div>
+        </div>
+
+        <!-- Task list -->
+        <ul id="taskList"></ul>
+
+    </div>
+
+    <!-- ================= EDIT MODAL ================= -->
+    <div id="modal" class="modal-overlay hidden">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal-head">
+                <h3 id="modalTitle">Edit task</h3>
+                <button id="closeModalBtn" class="icon-btn ghost" type="button" aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="modalForm">
+                <div class="field">
+                    <label for="editText">Task</label>
+                    <input type="text" id="editText" maxlength="200" required>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="editCategory">Category</label>
+                        <select id="editCategory">
+                            <option>Study</option>
+                            <option>Work</option>
+                            <option>Personal</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="editPriority">Priority</label>
+                        <select id="editPriority">
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="editDueDate">Due date</label>
+                        <input type="date" id="editDueDate">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="editNotes">Notes</label>
+                    <textarea id="editNotes" rows="3" maxlength="2000" placeholder="Optional details…"></textarea>
+                </div>
+
+                <p id="modalError" class="auth-error hidden"></p>
+
+                <div class="modal-actions">
+                    <button type="button" id="cancelEditBtn" class="btn btn-ghost">Cancel</button>
+                    <button type="submit" id="saveEditBtn" class="btn btn-gradient">
+                        <span class="btn-label">Save changes</span>
+                        <span class="spinner hidden"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= ANALYTICS MODAL ================= -->
+    <div id="analyticsModal" class="modal-overlay hidden">
+        <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="analyticsTitle">
+            <div class="modal-head">
+                <h3 id="analyticsTitle"><i class="fa-solid fa-chart-column"></i> Analytics</h3>
+                <button id="closeAnalyticsBtn" class="icon-btn ghost" type="button" aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="analytics-body" id="analyticsBody">
+                <div class="analytics-summary">
+                    <div class="completion-ring" id="completionRing"></div>
+                    <div class="analytics-summary-text">
+                        <strong id="analyticsRate">0% complete</strong>
+                        <span id="analyticsMeta">—</span>
+                    </div>
+                </div>
+
+                <h4>Completed per week</h4>
+                <div class="week-chart" id="weekChart"></div>
+
+                <div class="analytics-grid">
+                    <div>
+                        <h4>Categories</h4>
+                        <ul class="bar-list" id="categoryBars"></ul>
+                    </div>
+                    <div>
+                        <h4>Priority</h4>
+                        <ul class="bar-list" id="priorityBars"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toasts -->
+    <div id="toasts" class="toasts" aria-live="polite"></div>
+
+    <!-- Confetti -->
+    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+    <script>
+        // Static Pages build — talk to the hosted API.
+        window.API_BASE_URL = 'https://todo-app-pro-api.onrender.com';
+    </script>
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
